@@ -24,6 +24,6 @@ public class ItemsPackedText : MonoBehaviour
 
     private void PickupTruck_ItemsPackedChanged()
     {
-        TMP.SetText($"{_pickupTruck.ItemsPacked} / 9 items packed");
+        TMP.SetText($"{_pickupTruck.ItemsPacked} / 9 items in the trunk of a car");
     }
 }
