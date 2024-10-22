@@ -1,4 +1,3 @@
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _itemHolder;
     [SerializeField] private GameObject _hintPanel;
     [SerializeField] private TextMeshProUGUI _hintText;
+    [SerializeField] private LayerMask _raycastMask;
 
     private bool _isWithItem;
     private bool _isHintActive;
@@ -42,15 +42,11 @@ public class Player : MonoBehaviour
 
         // Not holding an item
         _currentItem = null;
-        if (Physics.Raycast(_origin.position, _origin.forward, out RaycastHit hit, _reach))
+        if (Physics.Raycast(_origin.position, _origin.forward, out RaycastHit hit, _reach, _raycastMask, QueryTriggerInteraction.Ignore))
         {
-            if (hit.rigidbody != null)
+            if ((hit.rigidbody != null) && hit.rigidbody.TryGetComponent(out _currentItem))
             {
-                _currentItem = hit.rigidbody.GetComponent<Item>();
-                if (_currentItem != null)
-                {
-                    ProcessHitItem();
-                }
+                ProcessHitItem();
             }
         }
 
@@ -83,21 +79,14 @@ public class Player : MonoBehaviour
 
     private void PickUpCurrentItem()
     {
-        _currentItem.GetComponent<Rigidbody>().isKinematic = true;
-        _currentItem.transform.parent = _itemHolder;
-        _currentItem.transform.DOLocalMove(Vector3.zero, 0.25f);
-        _currentItem.transform.DOLocalRotate(Vector3.zero, 0.25f);
-
+        _currentItem.GetPickedUp(_itemHolder);
         _isWithItem = true;
         ShowHint("RMB to drop");
     }
 
     private void DropCurrentItem()
     {
-        _currentItem.transform.DOKill();
-        _currentItem.GetComponent<Rigidbody>().isKinematic = false;
-        _currentItem.transform.parent = null;
-
+        _currentItem.GetDropped();
         _isWithItem = false;
         HideHint();
     }

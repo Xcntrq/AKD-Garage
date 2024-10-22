@@ -15,10 +15,10 @@ public class Cutscene : MonoBehaviour
     {
         _fpc.enabled = false;
         _uiPanel.gameObject.SetActive(false);
-        _garageDoorLeft.DOLocalRotate(new Vector3(0f, 160f, 0f), 2.5f, RotateMode.Fast).SetEase(Ease.InOutQuad);
-        _garageDoorRight.DOLocalRotate(new Vector3(0f, -160f, 0f), 2.5f, RotateMode.Fast).SetEase(Ease.InOutQuad);
+        _garageDoorLeft.DOLocalRotate(new Vector3(0f, 160f, 0f), 2f, RotateMode.Fast).SetEase(Ease.InOutQuad);
+        _garageDoorRight.DOLocalRotate(new Vector3(0f, -160f, 0f), 2f, RotateMode.Fast).SetEase(Ease.InOutQuad);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
         _uiPanel.localScale = Vector3.zero;
         _uiPanel.pivot = Vector2.one * 0.5f;
@@ -26,14 +26,12 @@ public class Cutscene : MonoBehaviour
         _uiPanel.anchorMax = Vector2.one * 0.5f;
         _uiPanel.gameObject.SetActive(true);
 
-        _uiPanel.DOScale(Vector3.one, 0.75f).OnComplete(() =>
-        {
-            _uiPanel.DOPivot(Vector2.up, 0.75f).SetEase(Ease.OutQuad);
-            _uiPanel.DOAnchorMin(Vector2.up, 0.75f).SetEase(Ease.OutQuad);
-            _uiPanel.DOAnchorMax(Vector2.up, 0.75f).SetEase(Ease.OutQuad);
-        });
+        _uiPanel.DOScale(Vector3.one, 0.75f);
+        _uiPanel.DOPivot(Vector2.up, 0.75f).SetEase(Ease.OutQuad);
+        _uiPanel.DOAnchorMin(Vector2.up, 0.75f).SetEase(Ease.OutQuad);
+        _uiPanel.DOAnchorMax(Vector2.up, 0.75f).SetEase(Ease.OutQuad);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         _fpc.enabled = true;
     }
